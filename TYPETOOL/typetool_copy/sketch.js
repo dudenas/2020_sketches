@@ -14,7 +14,8 @@ let _debug = true
 let _scl, _img
 let _draw = false
 let _picked = false
-let _x, _y, _index, _pickedCell
+let _x, _y, _index
+let _pickedCells = []
 
 function setup() {
 	createCanvas(600, 600)
@@ -62,8 +63,6 @@ function draw() {
 		})
 	}
 
-	if (_pickedCell) _pickedCell.show(true)
-
 	// draw main text in the middle
 	_img.fill(_clrs[0])
 	_img.rect((_gSize / 2) * _scl - _scl * 3, (_gSize / 2) * _scl - _scl, _scl * 7, _scl * 3)
@@ -76,6 +75,9 @@ function draw() {
 	if (frameCount % _speedChange == 0) {
 		_current = (_current + 1) % _alphabeth.length
 	}
+
+	// show picked cells
+	_pickedCells.forEach(elm => elm.show(true))
 }
 
 function keyPressed() {
@@ -102,7 +104,7 @@ function copyGraphics() {
 		if (_x < _gSize && _y < _gSize) {
 			_index = _x + _y * _gSize
 			_picked = true
-			_pickedCell = _objs[_index]
+			_pickedCells.push(_objs[_index])
 		}
 	}
 	// copy graphics if activated
@@ -111,18 +113,21 @@ function copyGraphics() {
 		let py = floor(map(mouseY, 0, _gSize * _scl, 0, _gSize, true))
 		let pindex = px + py * _gSize
 		// draw only if the cell is not the original one
+		// TODO: go over all picked cells and copy accordingly if it is possibl
 		if (pindex != _index && px < _gSize && py < _gSize) {
 			let obj = _objs[pindex]
 			// copy picked one to the destination
-			const sx = _pickedCell.x
-			const sy = _pickedCell.y
-			const sw = int(_scl)
-			const sh = int(_scl)
-			const dx = obj.x
-			const dy = obj.y
-			const dw = int(_scl)
-			const dh = int(_scl)
-			_img.copy(sx, sy, sw, sh, dx, dy, dw, dh)
+			_pickedCells.forEach(elm => {
+				const sx = elm.x
+				const sy = elm.y
+				const sw = int(_scl)
+				const sh = int(_scl)
+				const dx = obj.x
+				const dy = obj.y
+				const dw = int(_scl)
+				const dh = int(_scl)
+				_img.copy(sx, sy, sw, sh, dx, dy, dw, dh)
+			})
 		}
 
 	}

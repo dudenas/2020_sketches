@@ -1,8 +1,8 @@
-let clrs = [250, 5];
+let clrs = [5, 250];
 let myFont;
 
-let txtSize = 824;
-let slices = 54;
+let txtSize = 800;
+let slices = 60;
 let grfc = [];
 let totalFrames = 300;
 let sz = txtSize / 2;
@@ -14,12 +14,12 @@ function preload() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function setup() {
-	createCanvas(1080, 1080);
+	createCanvas(1600, 1200);
 	pixelDensity(1);
 	ease = new p5.Ease();
 	styles = ease.listAlgos();
 	// styles = ['quadraticInOut', 'elasticIn', 'doubleExponentialSigmoid', 'normalizedInverseErf', 'backIn', 'bounceIn'];
-	styles = ['doubleExponentialSigmoid', 'backIn', 'bounceIn'];
+	styles = ['doubleExponentialSigmoid', 'backIn', 'bounceIn', 'elasticIn'];
 	splitLetter();
 	saveSetup();
 }

@@ -148,7 +148,7 @@ function changeStage() {
 			}
 		}
 	} else {
-		running = undefined
+		_running = undefined
 		_currentStage = 0
 	}
 

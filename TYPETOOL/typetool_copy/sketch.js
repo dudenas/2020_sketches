@@ -13,13 +13,15 @@ let _debug = true
 
 let _scl, _img
 let _draw = false
-let _picked = false
+let _picked = true
 let _x, _y, _index
 let _pickedCells = []
+let _maxPickedCells = 8
+let _d = 1
 
 function setup() {
-	createCanvas(600, 600)
-	pixelDensity(2)
+	createCanvas(600, 600, P2D)
+	pixelDensity(_d)
 
 	// define scale
 	_scl = floor(width / (_gSize))
@@ -39,8 +41,8 @@ function setup() {
 	textSize(_textSize)
 
 	// setup image
-	_img = createGraphics(width * 2, height * 2, P2D)
-	_img.background(_clrs[0])
+	_img = createGraphics(width * _d, height * _d, P2D)
+	_img.background(_clrs[1])
 
 	// main text
 	_img.textSize(_textSize_2)
@@ -53,7 +55,7 @@ function draw() {
 
 	// draw image
 	push()
-	scale(0.5)
+	scale(1 / _d)
 	image(_img, 0, 0)
 	pop()
 	// show objects if not debug
@@ -78,6 +80,10 @@ function draw() {
 
 	// show picked cells
 	_pickedCells.forEach(elm => elm.show(true))
+	_picked = true
+
+	// print frame
+	// if (frameCount % 10 == 0) console.log(frameRate())
 }
 
 function keyPressed() {
@@ -90,6 +96,17 @@ function keyPressed() {
 	if (key == "R") {
 		_picked = false
 	}
+
+	// delete all cells and create a black one
+	if (key == "T") {
+		_pickedCells = []
+		// _pickedCells = []
+	}
+
+	if (key == "Y") {
+		_pickedCells = []
+	}
+
 	// debug
 	if (key == "D") {
 		_debug = !_debug
@@ -104,24 +121,31 @@ function copyGraphics() {
 		if (_x < _gSize && _y < _gSize) {
 			_index = _x + _y * _gSize
 			_picked = true
-			// TODO: if it is already selected remove that cell
-			_pickedCells.push(_objs[_index])
+			// if it is already selected remove that cell
+			let remove = false
+			_pickedCells.forEach((elm, elmIndex) => {
+				if (elm.index == _index) {
+					_pickedCells.splice(elmIndex, 1)
+					remove = true
+				}
+			})
+			if (!remove && _pickedCells.length < _maxPickedCells) _pickedCells.push(_objs[_index])
 		}
 	}
+
 	// copy graphics if activated
 	else if (_draw) {
 		let px = floor(map(mouseX, 0, _gSize * _scl, 0, _gSize, true))
 		let py = floor(map(mouseY, 0, _gSize * _scl, 0, _gSize, true))
 		let pindex = px + py * _gSize
-		// TODO: go over all picked cells and copy accordingly if it is possible
+		// go over all picked cells and copy accordingly if it is possible
 		let firstCell = null
 		_pickedCells.forEach(elm => {
 			let npx = px
 			let npy = py
 			if (firstCell) {
-				let diff_x = floor(map(elm.x - firstCell.x, 0, _gSize * _scl, 0, _gSize, true))
-				let diff_y = floor(map(elm.y - firstCell.y, 0, _gSize * _scl, 0, _gSize, true))
-				console.log(diff_x)
+				let diff_x = floor(map(elm.x - firstCell.x, 0, _gSize * _scl, 0, _gSize))
+				let diff_y = floor(map(elm.y - firstCell.y, 0, _gSize * _scl, 0, _gSize))
 				npx += diff_x
 				npy += diff_y
 				pindex = npx + npy * _gSize
@@ -130,8 +154,9 @@ function copyGraphics() {
 				firstCell = elm
 			}
 			// check if it is within the boundaries of the canvas
-			if (npx < _gSize && npx > 0 &&
-				npy < _gSize && npy > 0) {
+			if (npx <= _gSize && npx >= 0 &&
+				npy <= _gSize && npy >= 0 &&
+				_objs[pindex] != undefined) {
 				let obj = _objs[pindex]
 				const sx = elm.x
 				const sy = elm.y
@@ -144,7 +169,6 @@ function copyGraphics() {
 				_img.copy(sx, sy, sw, sh, dx, dy, dw, dh)
 			}
 		})
-
 	}
 }
 
@@ -154,7 +178,10 @@ class Obj {
 		this.x = x
 		this.y = y
 		this.index = index
-		this.taken = this.index == 209 || this.index == 210 || this.index == 211 ? true : false
+	}
+	// TODO: create a black one 
+	createBlack() {
+
 	}
 
 	show(special) {

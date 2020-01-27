@@ -104,6 +104,7 @@ function copyGraphics() {
 		if (_x < _gSize && _y < _gSize) {
 			_index = _x + _y * _gSize
 			_picked = true
+			// TODO: if it is already selected remove that cell
 			_pickedCells.push(_objs[_index])
 		}
 	}
@@ -112,12 +113,26 @@ function copyGraphics() {
 		let px = floor(map(mouseX, 0, _gSize * _scl, 0, _gSize, true))
 		let py = floor(map(mouseY, 0, _gSize * _scl, 0, _gSize, true))
 		let pindex = px + py * _gSize
-		// draw only if the cell is not the original one
-		// TODO: go over all picked cells and copy accordingly if it is possibl
-		if (pindex != _index && px < _gSize && py < _gSize) {
-			let obj = _objs[pindex]
-			// copy picked one to the destination
-			_pickedCells.forEach(elm => {
+		// TODO: go over all picked cells and copy accordingly if it is possible
+		let firstCell = null
+		_pickedCells.forEach(elm => {
+			let npx = px
+			let npy = py
+			if (firstCell) {
+				let diff_x = floor(map(elm.x - firstCell.x, 0, _gSize * _scl, 0, _gSize, true))
+				let diff_y = floor(map(elm.y - firstCell.y, 0, _gSize * _scl, 0, _gSize, true))
+				console.log(diff_x)
+				npx += diff_x
+				npy += diff_y
+				pindex = npx + npy * _gSize
+			} else {
+				// copy first elmenet
+				firstCell = elm
+			}
+			// check if it is within the boundaries of the canvas
+			if (npx < _gSize && npx > 0 &&
+				npy < _gSize && npy > 0) {
+				let obj = _objs[pindex]
 				const sx = elm.x
 				const sy = elm.y
 				const sw = int(_scl)
@@ -127,8 +142,8 @@ function copyGraphics() {
 				const dw = int(_scl)
 				const dh = int(_scl)
 				_img.copy(sx, sy, sw, sh, dx, dy, dw, dh)
-			})
-		}
+			}
+		})
 
 	}
 }

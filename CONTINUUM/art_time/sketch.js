@@ -12,6 +12,7 @@ const coffee = 'it\'s_coffee_time'
 const pusryciai = 'puse_ryto'
 let sounds = []
 let rocky = false
+let finnished = false
 
 // NO SLEEP
 let noSleep = new NoSleep();
@@ -22,65 +23,117 @@ document.addEventListener('click', function enableNoSleep() {
 	console.log('noSleep')
 }, false);
 
+// JSON TIME
+let _schedule = [{
+		start: [09, 00],
+		end: [09, 50]
+	},
+	// PUSRYCIAI
+	{
+		start: [10, 30],
+		end: [10, 55]
+	}, {
+		start: [11, 00],
+		end: [11, 25]
+	}, {
+		start: [11, 40],
+		end: [12, 05]
+	}, {
+		start: [12, 10],
+		end: [12, 35]
+	}, {
+		start: [12, 40],
+		end: [13, 05]
+	}, {
+		start: [13, 10],
+		end: [13, 35]
+	}, {
+		start: [13, 40],
+		end: [14, 05]
+	}, {
+		start: [14, 10],
+		end: [14, 35]
+	},
+	// PIETUS
+	{
+		start: [15, 30],
+		end: [15, 55]
+	}, {
+		start: [16, 00],
+		end: [16, 25]
+	}, {
+		start: [16, 40],
+		end: [17, 05]
+	}, {
+		start: [17, 10],
+		end: [17, 35]
+	}
+]
 // TIMING
 let _stages = [
 	// WRITING
 
-	getCurrentTime(09, 00, 0),
-	getCurrentTime(09, 50, 0),
+	getCurrentTime(_schedule[0]["start"][0], _schedule[0]["start"][1], 0),
+	getCurrentTime(_schedule[0]["end"][0], _schedule[0]["end"][1], 0),
 
 	// PUSRYCIAI 1
 
-	getCurrentTime(10, 30, 0),
-	getCurrentTime(10, 55, 0),
+	getCurrentTime(_schedule[1]["start"][0], _schedule[1]["start"][1], 0),
+	getCurrentTime(_schedule[1]["end"][0], _schedule[1]["end"][1], 0),
 
-	getCurrentTime(11, 00, 0),
-	getCurrentTime(11, 25, 0),
+	getCurrentTime(_schedule[2]["start"][0], _schedule[2]["start"][1], 0),
+	getCurrentTime(_schedule[2]["end"][0], _schedule[2]["end"][1], 0),
 
 	// COFFEE 5
 
-	getCurrentTime(11, 40, 0),
-	getCurrentTime(12, 05, 0),
+	getCurrentTime(_schedule[3]["start"][0], _schedule[3]["start"][1], 0),
+	getCurrentTime(_schedule[3]["end"][0], _schedule[3]["end"][1], 0),
 
-	getCurrentTime(12, 10, 0),
-	getCurrentTime(12, 35, 0),
+	getCurrentTime(_schedule[4]["start"][0], _schedule[4]["start"][1], 0),
+	getCurrentTime(_schedule[4]["end"][0], _schedule[4]["end"][1], 0),
 
 	// SMOKING 9
 
-	getCurrentTime(12, 40, 0),
-	getCurrentTime(13, 05, 0),
+	getCurrentTime(_schedule[5]["start"][0], _schedule[5]["start"][1], 0),
+	getCurrentTime(_schedule[5]["end"][0], _schedule[5]["end"][1], 0),
 
-	getCurrentTime(13, 10, 0),
-	getCurrentTime(13, 35, 0),
+	getCurrentTime(_schedule[6]["start"][0], _schedule[6]["start"][1], 0),
+	getCurrentTime(_schedule[6]["end"][0], _schedule[6]["end"][1], 0),
 
 	// SMOKING 13
 
-	getCurrentTime(14, 30, 0),
-	getCurrentTime(14, 55, 0),
+	getCurrentTime(_schedule[7]["start"][0], _schedule[7]["start"][1], 0),
+	getCurrentTime(_schedule[7]["end"][0], _schedule[7]["end"][1], 0),
 
-	getCurrentTime(15, 00, 0),
-	getCurrentTime(15, 25, 0),
+	getCurrentTime(_schedule[8]["start"][0], _schedule[8]["start"][1], 0),
+	getCurrentTime(_schedule[8]["end"][0], _schedule[8]["end"][1], 0),
 
 	// PIETU PERTRAUKA 17
 
-	getCurrentTime(15, 30, 0),
-	getCurrentTime(15, 55, 0),
+	getCurrentTime(_schedule[9]["start"][0], _schedule[9]["start"][1], 0),
+	getCurrentTime(_schedule[9]["end"][0], _schedule[9]["end"][1], 0),
 
-	getCurrentTime(16, 00, 0),
-	getCurrentTime(16, 25, 0),
+	getCurrentTime(_schedule[10]["start"][0], _schedule[10]["start"][1], 0),
+	getCurrentTime(_schedule[10]["end"][0], _schedule[10]["end"][1], 0),
 
 	// COFFEE 21
 
-	getCurrentTime(16, 40, 0),
-	getCurrentTime(17, 05, 0),
+	getCurrentTime(_schedule[11]["start"][0], _schedule[11]["start"][1], 0),
+	getCurrentTime(_schedule[11]["end"][0], _schedule[11]["end"][1], 0),
 
-	getCurrentTime(17, 10, 0),
-	getCurrentTime(17, 35, 0),
+	getCurrentTime(_schedule[12]["start"][0], _schedule[12]["start"][1], 0),
+	getCurrentTime(_schedule[12]["end"][0], _schedule[12]["end"][1], 0),
 	// 25 FINNISH
 ]
 
 // STAGE
 let stage
+
+// custom stages
+let _stageMorning = 1
+let _stageDinner = 17
+let _stageSmoking = [9, 13]
+let _stageCoffee = [5, 21]
 
 // FUNCTION TO GET THE TIME
 function getCurrentTime(h, m, s) {
@@ -96,6 +149,7 @@ function preload() {
 	sounds[3] = loadSound('assets/eat.mp3');
 	sounds[4] = loadSound('assets/start.mp3');
 	sounds[5] = loadSound('assets/smoking.mp3');
+	sounds[6] = loadSound('assets/finnished.mp3');
 }
 
 // ————————————————————————————————————————————————code
@@ -135,11 +189,11 @@ function changeStage() {
 			_currentStage++
 			// PLAY SOUND
 			sounds.forEach(elm => elm.stop())
-			if (_currentStage == 1 || _currentStage == 17) {
+			if (_currentStage == _stageMorning || _currentStage == _stageDinner) {
 				sounds[3].play()
-			} else if (_currentStage == 5 || _currentStage == 21) {
+			} else if (_currentStage == _stageCoffee[0] || _currentStage == _stageCoffee[1]) {
 				sounds[2].play()
-			} else if (_currentStage == 9 || _currentStage == 13) {
+			} else if (_currentStage == _stageSmoking[0] || _currentStage == _stageSmoking[1]) {
 				sounds[5].play()
 			} else if (_currentStage % 2 == 0) {
 				sounds[0].play()
@@ -157,7 +211,7 @@ function changeStage() {
 // DRAW
 function draw() {
 	// play rocky before the day
-	if (!rocky && _currentTime < _stages[0] && _currentTime > getCurrentTime(8, 50, 0)) {
+	if (!rocky && _running == undefined && _currentTime > getCurrentTime(8, 50, 0)) {
 		sounds[4].loop()
 		rocky = true
 	} else {
@@ -175,13 +229,13 @@ function draw() {
 			textSize(width / 10)
 			text(_stages[_currentStage + 1] - _currentTime, width / 2 - textWidth(_stages[_currentStage + 1] - _currentTime) / 2, height / 4 * 3);
 			textSize(width / 20)
-			if (_currentStage == 15) {
+			if (_currentStage == _stageDinner) {
 				text(pietus, width / 2 - textWidth(pietus) / 2, height / 4);
-			} else if (_currentStage == 7 || _currentStage == 23) {
+			} else if (_currentStage == _stageCoffee[0] || _currentStage == _stageCoffee[1]) {
 				text(coffee, width / 2 - textWidth(coffee) / 2, height / 4);
-			} else if (_currentStage == 3) {
+			} else if (_currentStage == _stageMorning) {
 				text(pusryciai, width / 2 - textWidth(pusryciai) / 2, height / 4);
-			} else if (_currentStage == 11 || _currentStage == 19) {
+			} else if (_currentStage == _stageSmoking[0] || _currentStage == _stageSmoking[1]) {
 				text(smoking, width / 2 - textWidth(smoking) / 2, height / 4);
 			} else {
 				text(pertrauka, width / 2 - textWidth(pertrauka) / 2, height / 4);
@@ -192,7 +246,17 @@ function draw() {
 		fill(clrs[0])
 		textSize(width / 20)
 		text(miegas, width / 2 - textWidth(miegas) / 2, height / 4);
+
+		// show schedule
+		showSchedule()
+
+		// play finnished song
+		if (_currentTime > _stages[_stages.length - 1] && !finnished) {
+			sounds[6].play()
+			finnished = true
+		}
 	}
+
 
 	// time
 	const txt = showTime()
@@ -201,6 +265,23 @@ function draw() {
 
 	// check running
 	changeStage()
+}
+
+function showSchedule() {
+	for (let i = 0; i < _schedule.length; i++) {
+		const txt_a = `${nf(_schedule[i]["start"][0],2,0)}_${nf(_schedule[i]["start"][1],2,0)}`
+		const txt_b = `${nf(_schedule[i]["end"][0],2,0)}_${nf(_schedule[i]["end"][1],2,0)}`
+		const padd = (height / 40) * i
+		textSize(height / 40)
+		text(txt_a, width / 2 - textWidth(txt_a) / 2 - width / 10, height / 1.8 + padd)
+		if (i == 1 || i == 8) {
+			textSize(height / 60)
+			text("EAT", width / 2 - textWidth("EAT") / 2, height / 1.8 + padd - height / 80)
+		}
+		textSize(height / 40)
+		text("—", width / 2 - textWidth("—") / 2, height / 1.8 + padd)
+		text(txt_b, width / 2 - textWidth(txt_b) / 2 + width / 10, height / 1.8 + padd)
+	}
 }
 
 // ————————————————————————————————————————————————————————————————————————————————————————————————————————————

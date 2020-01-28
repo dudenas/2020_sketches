@@ -5,11 +5,11 @@ const _objs = []
 const _textSize = 200 / _gSize
 const _textSize_2 = 40
 
-let _alphabeth = "abcdefghijklmnopqrstuvwxyz".split("")
+let _alphabeth = "God does not play dice with the universe".split(" ")
 let _current = 0
 // speed how fast the text will change
-let _speedChange = 10
-let _debug = true
+let _speedChange = 30
+let _debug = false
 
 let _scl, _img
 let _draw = false
@@ -18,6 +18,7 @@ let _x, _y, _index
 let _pickedCells = []
 let _maxPickedCells = 8
 let _d = 1
+let _paintBlack = false
 
 function setup() {
 	createCanvas(600, 600, P2D)
@@ -69,7 +70,9 @@ function draw() {
 	_img.fill(_clrs[0])
 	_img.rect((_gSize / 2) * _scl - _scl * 3, (_gSize / 2) * _scl - _scl, _scl * 7, _scl * 3)
 	_img.fill(_clrs[1])
-	_img.text(_alphabeth[_current], (_gSize / 2) * _scl + _scl / 2, (_gSize / 2) * _scl + _scl / 2)
+	if (_paintBlack) {
+		_img.rect((_gSize / 2) * _scl, (_gSize / 2) * _scl, _scl, _scl)
+	} else _img.text(_alphabeth[_current], (_gSize / 2) * _scl + _scl / 2, (_gSize / 2) * _scl + _scl / 2)
 	// copy graphics
 	copyGraphics()
 
@@ -94,13 +97,18 @@ function keyPressed() {
 
 	// repic cell
 	if (key == "R") {
-		_picked = false
+		if (!_paintBlack)
+			_picked = false
 	}
 
 	// delete all cells and create a black one
 	if (key == "T") {
+		_paintBlack = !_paintBlack
 		_pickedCells = []
-		// _pickedCells = []
+		if (_paintBlack) {
+			let idx = _gSize / 2 + _gSize / 2 * _gSize
+			_pickedCells.push(_objs[idx])
+		}
 	}
 
 	if (key == "Y") {
@@ -178,10 +186,6 @@ class Obj {
 		this.x = x
 		this.y = y
 		this.index = index
-	}
-	// TODO: create a black one 
-	createBlack() {
-
 	}
 
 	show(special) {

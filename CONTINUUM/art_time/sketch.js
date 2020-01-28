@@ -274,7 +274,7 @@ function showSchedule() {
 		const padd = (height / 40) * i
 		textSize(height / 40)
 		text(txt_a, width / 2 - textWidth(txt_a) / 2 - width / 10, height / 1.8 + padd)
-		if (i == 1 || i == 8) {
+		if (i == 1 || i == 9) {
 			textSize(height / 60)
 			text("EAT", width / 2 - textWidth("EAT") / 2, height / 1.8 + padd - height / 80)
 		}

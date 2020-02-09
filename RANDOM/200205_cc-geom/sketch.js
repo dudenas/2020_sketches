@@ -29,7 +29,7 @@ let clrs = {
 let art;
 
 function setup() {
-	createCanvas(800, 800);
+	createCanvas(540, 540);
 
 	// create graphics
 	art = new grfc();

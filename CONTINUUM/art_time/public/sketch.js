@@ -13,6 +13,7 @@ const pusryciai = 'puse_ryto'
 let sounds = []
 let rocky = false
 let finnished = false
+let _soundloaded = false
 
 // NO SLEEP
 let noSleep = new NoSleep();
@@ -142,19 +143,18 @@ function getCurrentTime(h, m, s) {
 
 // PRELOAD SOUNDS
 function preload() {
-  // Load the sound file.
-  sounds[0] = loadSound('assets/work.mp3');
-  sounds[1] = loadSound('assets/break.mp3');
-  sounds[2] = loadSound('assets/coffee.mp3');
-  sounds[3] = loadSound('assets/eat.mp3');
-  sounds[4] = loadSound('assets/start.mp3');
-  sounds[5] = loadSound('assets/smoking.mp3');
-  sounds[6] = loadSound('assets/finnished.mp3');
+  // // Load the sound file.
+  // sounds[0] = loadSound('assets/work.mp3');
+  // sounds[1] = loadSound('assets/break.mp3');
+  // sounds[2] = loadSound('assets/coffee.mp3');
+  // sounds[3] = loadSound('assets/eat.mp3');
+  // sounds[4] = loadSound('assets/start.mp3');
+  // sounds[5] = loadSound('assets/smoking.mp3');
+  // sounds[6] = loadSound('assets/finnished.mp3');
 }
 
 // ————————————————————————————————————————————————server
-let _id
-let _total
+let _total = 0
 
 // ————————————————————————————————————————————————code
 function setup() {
@@ -198,6 +198,27 @@ function setup() {
 
   // call the init function
   // getStartTime()
+
+  // Load the sound file.
+  loadSoundFile()
+}
+
+function loadSoundFile() {
+  sounds[0] = loadSound('assets/work.mp3', () => {
+    sounds[1] = loadSound('assets/break.mp3', () => {
+      sounds[2] = loadSound('assets/coffee.mp3', () => {
+        sounds[3] = loadSound('assets/eat.mp3', () => {
+          sounds[4] = loadSound('assets/start.mp3', () => {
+            sounds[5] = loadSound('assets/smoking.mp3', () => {
+              sounds[6] = loadSound('assets/finnished.mp3', () => {
+                _soundloaded = true
+              });
+            });
+          });
+        });
+      })
+    })
+  })
 }
 
 // SHOWING TIME
@@ -223,17 +244,19 @@ function changeStage() {
     } else {
       _currentStage++
       // PLAY SOUND
-      sounds.forEach(elm => elm.stop())
-      if (_currentStage == _stageMorning || _currentStage == _stageDinner) {
-        sounds[3].play()
-      } else if (_currentStage == _stageCoffee[0] || _currentStage == _stageCoffee[1]) {
-        sounds[2].play()
-      } else if (_currentStage == _stageSmoking[0] || _currentStage == _stageSmoking[1]) {
-        sounds[5].play()
-      } else if (_currentStage % 2 == 0) {
-        sounds[0].play()
-      } else {
-        sounds[1].play()
+      if (_soundloaded) {
+        sounds.forEach(elm => elm.stop())
+        if (_currentStage == _stageMorning || _currentStage == _stageDinner) {
+          sounds[3].play()
+        } else if (_currentStage == _stageCoffee[0] || _currentStage == _stageCoffee[1]) {
+          sounds[2].play()
+        } else if (_currentStage == _stageSmoking[0] || _currentStage == _stageSmoking[1]) {
+          sounds[5].play()
+        } else if (_currentStage % 2 == 0) {
+          sounds[0].play()
+        } else {
+          sounds[1].play()
+        }
       }
     }
   } else {
@@ -246,11 +269,13 @@ function changeStage() {
 // DRAW
 function draw() {
   // play rocky before the day
-  if (!rocky && _running == undefined && _currentTime > getCurrentTime(8, 55, 0)) {
-    sounds[4].loop()
-    rocky = true
-  } else {
-    sounds[4].stop()
+  if (_soundloaded) {
+    if (!rocky && _running == undefined && _currentTime > getCurrentTime(8, 55, 0)) {
+      sounds[4].loop()
+      rocky = true
+    } else {
+      sounds[4].stop()
+    }
   }
 
   // running texts
@@ -286,9 +311,11 @@ function draw() {
     showSchedule()
 
     // play finnished song
-    if (_currentTime > _stages[_stages.length - 1] && !finnished) {
-      sounds[6].play()
-      finnished = true
+    if (_soundloaded) {
+      if (_currentTime > _stages[_stages.length - 1] && !finnished) {
+        sounds[6].play()
+        finnished = true
+      }
     }
   }
 
@@ -302,19 +329,13 @@ function draw() {
   changeStage()
 
   // server
-  // if (_running) {
-  // 	fill(clrs[1])
-  // } else {
-  // 	fill(clrs[0])
-  // }
-  // textSize(width / 20)
-  // if (_total && _id) {
-  // 	if (frameCount % 30 == 0) {
-  // 		getData()
-  // 	}
-  // 	text(_total, width / 2 - textWidth(_total) / 2, height / 6)
-  // 	text(_id, width / 2 - textWidth(_id) / 2, height / 6 + width / 20)
-  // }
+  if (_running) {
+    fill(clrs[1])
+  } else {
+    fill(clrs[0])
+  }
+  textSize(width / 20)
+  text(_total, width / 2 - textWidth(_total) / 2, height / 6)
 }
 
 function showSchedule() {
@@ -382,44 +403,12 @@ var starterData = {
 
 doResize(null, starterData);
 
-// ————————————————————————————————————————————————————————————————————————————————————————————————————————————SERVER
-// window.onbeforeunload = function (e) {
-//   console.log(e)
-//   // get start time
-//   const userLogOut = {
-//     endTime: _currentTime,
-//   }
-
-//   // send it to a server
-//   fetch('/users', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(userLogOut)
-//   })
-// }
-
-// async function getData() {
-//   const response = await fetch('/users')
-//   const data = await response.json()
-//   console.log(data)
-// }
-
 
 // ————————————————————————————————————————————————————————————————————————————————————————————————————————————SOCKET
 var socket = io.connect('http://localhost:8080');
 
 
-function getCounter() {
-  // console.log('test')
-
-}
-
-setInterval(() => {
-  getCounter()
-}, 1000);
-
 socket.on('counter', function (data) {
   console.log(data.count);
+  _total = data.count
 })

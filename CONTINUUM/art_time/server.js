@@ -1,5 +1,3 @@
-// const express = require('express')
-// const app = express()
 // const Datastore = require('nedb')
 // let count = 0
 // let _total = 0
@@ -75,9 +73,14 @@ io.on('connection', function (socket) {
 
   }
 
-
   console.log(`client ${socket.id} is connected`, count);
 
+  // update counter every ten seconds
+  setInterval(() => {
+    io.sockets.emit('counter', {
+      count: count
+    })
+  }, 10000)
 
 
   /* Disconnect socket */

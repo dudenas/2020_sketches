@@ -1,5 +1,5 @@
 let letters = [];
-let SW = 12;
+let SW = 2;
 let padd;
 let echo = 64;
 
@@ -69,7 +69,7 @@ class Letter {
   show() {
 
     stroke(this.c);
-    strokeWeight(this.sw);
+    strokeWeight(SW);
     noFill();
     for (let p of this.points) {
       line(p.x, p.y, this.x, this.y);

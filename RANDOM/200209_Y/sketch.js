@@ -4,7 +4,7 @@ let totalFrames = 35;
 
 //————————————————————————————————————————————————————————————————————————————————— Setup
 function setup() {
-	createCanvas(540, 540);
+	createCanvas(800, 600);
 
 	// easing functions
 	ease = new p5.Ease();
@@ -31,4 +31,7 @@ function draw() {
 
 	// save
 	saveDraw();
+	let percent = ((frameCount) % (totalFrames)) / (totalFrames);
+	SW = map(sin(percent * TWO_PI), -1, 1, 2, 48);
+
 }

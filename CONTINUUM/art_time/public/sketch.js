@@ -200,7 +200,7 @@ function setup() {
   // getStartTime()
 
   // Load the sound file.
-  loadSoundFile()
+  // loadSoundFile()
 }
 
 function loadSoundFile() {
@@ -405,10 +405,23 @@ doResize(null, starterData);
 
 
 // ————————————————————————————————————————————————————————————————————————————————————————————————————————————SOCKET
-var socket = io.connect('http://localhost:8080');
+// var socket = io('http://localhost:32323');
+// var socket = io('http://127.0.0.1:32323')
+// var socket = io('http://209.124.66.17:32323')
+var socket = io();
 
+// var socket = io()
 
-socket.on('counter', function (data) {
-  console.log(data.count);
-  _total = data.count
-})
+// socket.on('counter', function (data) {
+//   console.log(data.count);
+//   _total = data.count
+// })
+
+// var socket = io();
+
+socket.on('news', function (data) {
+  console.log(data);
+  socket.emit('my other event', {
+    my: 'data'
+  });
+});

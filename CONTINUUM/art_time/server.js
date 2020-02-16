@@ -40,24 +40,28 @@
 // })
 
 
+console.log('server is loading')
+
 const express = require('express')
 
 const app = express();
 
-const server = app.listen(8080)
+const server = require('http').Server(app)
 
-app.use(express.static('public'))
+const io = require('socket.io')(server)
 
-const _socket = require('socket.io');
+server.listen(32323);
 
-const io = _socket(server)
-
+app.use(express.static('./public'))
 
 var count = 0;
 
 var $ipsConnected = [];
 
 io.on('connection', function (socket) {
+  socket.emit('news', {
+    hello: 'world'
+  });
 
   var $ipAddress = socket.handshake.address;
 
@@ -76,11 +80,11 @@ io.on('connection', function (socket) {
   console.log(`client ${socket.id} is connected`, count);
 
   // update counter every ten seconds
-  setInterval(() => {
-    io.sockets.emit('counter', {
-      count: count
-    })
-  }, 10000)
+  // setInterval(() => {
+  //   io.sockets.emit('counter', {
+  //     count: count
+  //   })
+  // }, 10000)
 
 
   /* Disconnect socket */
@@ -99,4 +103,10 @@ io.on('connection', function (socket) {
 
     }
   });
+});
+
+app.get("/", function (req, res) {
+  // res.send("You have reached the contact page");
+  console.log('test')
+  res.render("testy");
 });

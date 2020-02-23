@@ -5,7 +5,7 @@ let capturer;
 //———————————————————————————————————— save
 // in initialization phase
 function saveSetup() {
-  pixelDensity(2);
+  pixelDensity(2);``
   frameRate(60);
   capturer = new CCapture({
     format: 'png',
@@ -20,7 +20,7 @@ function saveSetup() {
 function saveDraw() {
   if (save) {
     capturer.capture(canvas);
-    if (frameCount == (totalFrames * 2)) {
+    if (frameCount == (totalFrames)) {
       console.log('finnished');
       capturer.stop();
       capturer.save();

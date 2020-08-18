@@ -1,5 +1,5 @@
 let rows, cols;
-let scl = 7;
+let scl = 10;
 let letters = [];
 let SW = 5;
 let padd;
@@ -74,7 +74,7 @@ function grfcDraw() {
 //————————————————————————————————————————————————————————————————————————————————— grfcSetup
 function grfcSetup() {
   rows = scl;
-  cols = scl;
+  cols = scl * 1.3;
   scl = floor(height / scl);
   padd = scl / 10;
   console.log(SW);

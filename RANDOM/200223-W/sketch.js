@@ -4,7 +4,7 @@ let totalFrames = 150;
 
 //————————————————————————————————————————————————————————————————————————————————— Setup
 function setup() {
-	createCanvas(540, 540);
+	createCanvas(800, 600);
 
 	// easing functions
 	ease = new p5.Ease();

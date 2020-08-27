@@ -21,7 +21,7 @@ function saveDraw() {
 
   if (save) {
     capturer.capture(canvas);
-    if (_finnished && frameCount > _finnishFrame) {
+    if (_finnished) {
       console.log('finnished');
       capturer.stop();
       capturer.save();

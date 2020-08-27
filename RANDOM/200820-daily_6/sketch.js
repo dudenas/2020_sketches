@@ -4,11 +4,12 @@ let _nextId = 0
 
 //————————————————————————————————————————————— setup
 function setup() {
-	createCanvas(540, 540, WEBGL);
+	createCanvas(540, 540);
 	pixelDensity(pd)
 	setupGrfc();
 	saveSetup();
 	strokeCap(SQUARE)
+	strokeJoin(BEVEL)
 	smooth();
 }
 
@@ -18,36 +19,27 @@ let _finnishFrame
 function draw() {
 	background(clrs[0]);
 
-	// idx = floor(random(cells.length))
-	idx = _nextId
+	idx = floor(random(cells.length))
+	testCount = 0
 	if (!_finnished) {
-		if (frameCount < cells.length) _nextId = cells[idx].pickOther()
+		while (cells[idx].picked && testCount < 1000) {
+			idx = floor(random(cells.length))
+			testCount++
+		}
+
+		if (testCount < 1000 && idx < cells.length) _nextId = cells[idx].pickOther()
 		else {
-			cells.sort(function (a, b) {
-				if (a.orderIdx < b.orderIdx) {
-					return -1;
-				}
-				if (a.orderIdx > b.orderIdx) {
-					return 1;
-				}
-				return 0;
-			});
 			_finnished = true
 			_finnishFrame = frameCount
 		}
 	}
 
-	beginShape()
+
 	for (let i = 0; i < cells.length; i++) {
 		let c = cells[i]
 		c.update()
 		c.show()
-
 	}
-	noFill()
-	stroke(clrs[1])
-	strokeWeight(_sw)
-	endShape()
 
 	if (_finnished && frameCount > _finnishFrame) {
 		console.log("finnished")

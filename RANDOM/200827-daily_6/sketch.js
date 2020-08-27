@@ -1,7 +1,7 @@
 const _pd = 2
 let _finnished = false
-let _nextIdx
 const _totalTime = 210
+let _freeIdx = -1
 
 //————————————————————————————————————————————— setup
 function setup() {
@@ -12,8 +12,7 @@ function setup() {
 	strokeCap(PROJECT)
 	strokeJoin(BEVEL)
 	smooth();
-
-	pickOther()
+	frameRate(30)
 }
 
 //————————————————————————————————————————————— draw
@@ -40,18 +39,16 @@ function draw() {
 	for (let j = 1; j < _rows - 1; j++) {
 		for (let i = 1; i < _cols - 1; i++) {
 			const idx = i + j * _cols
-			const prevCell = _cells[findOther(idx - 1)]
-			const nextCell = _cells[findOther(idx + 1)]
-			const c = _cells[findOther(idx)]
+			const c = _cells[idx]
 			c.update()
-			if (!prevCell.picked || !nextCell.picked) c.show()
-			else c.show(prevCell, nextCell)
+			c.show()
+			c.show()
 			c.current = false
 		}
 	}
 
 	if (frameCount < _totalTime) {
-		for (let i = 0; i < _pickPerFrame; i++) _cells[_nextIdx].pickSpot()
+		fillEmptySpot(_freeIdx)
 	} else if (_countToFinnish < 90) {
 		_showFinal = true
 		_countToFinnish++
@@ -67,9 +64,54 @@ function draw() {
 	saveDraw();
 }
 
-function pickOther() {
-	_nextIdx = floor(random(_cells.length))
-	while (!_cells[_nextIdx].picked || _cells[_nextIdx].initialCell) {
-		_nextIdx = floor(random(_cells.length))
+//————————————————————————————————————————————— fillEmptySpot
+function fillEmptySpot(idx) {
+	let found = false
+	let otherIdx = -1
+	let testCount = 0
+	// pick direction
+	while (!found && testCount < 1000) {
+		let dirX = floor(random(-1, 2))
+		let dirY = floor(random(-1, 2))
+		if (dirX == -1 && dirY == -1) otherIdx = idx - _cols - 1
+		if (dirX == -1 && dirY == 0) otherIdx = idx - 1
+		if (dirX == -1 && dirY == 1) otherIdx = idx + _cols - 1
+		if (dirX == 0 && dirY == -1) otherIdx = idx - _cols
+		if (dirX == 0 && dirY == 0) otherIdx = -1
+		if (dirX == 0 && dirY == 1) otherIdx = idx + _cols
+		if (dirX == 1 && dirY == -1) otherIdx = idx - _cols + 1
+		if (dirX == 1 && dirY == 0) otherIdx = idx + 1
+		if (dirX == 1 && dirY == 1) otherIdx = idx + _cols + 1
+		if (_cells[otherIdx] != undefined && _cells[otherIdx].picked && !_cells[otherIdx].moving) {
+			found = true
+		}
+		testCount++
 	}
+
+	// if direction found copy the other position to which the cell will move
+	if (testCount < 1000) {
+		_cells[otherIdx].other = _cells[idx].opos.copy()
+		_cells[otherIdx].moving = true
+
+		_cells[idx].occupied = true
+		_cells[otherIdx].occupied = true
+
+		_freeIdx = otherIdx
+	} else {
+		pickFreeIdx()
+	}
+}
+
+//————————————————————————————————————————————— fillEmptySpot
+function pickFreeIdx() {
+	idx = floor(random(_cells.length))
+	while (!_cells[idx].picked && !_cells[idx].isFree && !_cells[idx].occupied) {
+		idx = floor(random(_cells.length))
+	}
+
+	_freeIdx = idx
+	// _cells[_freeIdx].picked = false
+	_cells[_freeIdx].isFree = true
+
+	console.log(_freeIdx)
 }

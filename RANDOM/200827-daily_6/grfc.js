@@ -9,10 +9,9 @@ let _myfont;
 let _rows, _cols
 let _cells = [];
 
-const _scl = 24;
+const _scl = 40;
 const _pickPerFrame = 2
-let _txt = "D"
-const _totalEmptyCellsRatio = 10
+let _txt = "A"
 
 //————————————————————————————————————————————— preload Grfc
 function preload() {
@@ -56,15 +55,5 @@ function setupGrfc() {
     }
   }
 
-  // pikc random free cells
-  for (let i = 0; i < _cells.length / _totalEmptyCellsRatio; i++) {
-    let rnd = floor(random(_cells.length))
-    while (!_cells[rnd].picked) {
-      rnd = floor(random(_cells.length))
-    }
-
-    let freeCell = _cells[rnd]
-    freeCell.initialCell = true
-    _freeCells.push(freeCell.opos.copy())
-  }
+  pickFreeIdx()
 }

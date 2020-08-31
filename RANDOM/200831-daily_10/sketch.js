@@ -1,11 +1,12 @@
 const openSimplex = openSimplexNoise(1);
 
 const _pd = 2
-const _totalFrames = 600
+const _totalFrames = 150
 const _r = 5
 
 let _mouse;
 let _finnished = false
+let ease, styles;
 
 //————————————————————————————————————————————— setup
 function setup() {
@@ -17,6 +18,10 @@ function setup() {
 	strokeJoin(BEVEL)
 	smooth();
 	frameRate(30)
+
+	ease = new p5.Ease();
+	styles = ease.listAlgos();
+	styles = ['quadraticInOut', 'elasticIn', 'doubleExponentialSigmoid', 'normalizedInverseErf', 'backIn', 'bounceIn'];
 
 	_mouse = createVector(width / 2, height / 2)
 }
@@ -32,6 +37,7 @@ function draw() {
 	//————————————————————————————————————————————— draw points
 	for (let i = 0; i < _points.length; i++) {
 		const p = _points[i]
+		p.update()
 		p.show()
 	}
 	//————————————————————————————————————————————— draw mouse
@@ -43,9 +49,11 @@ function draw() {
 	ellipse(_mouse.x, _mouse.y, 50, 50)
 
 	//————————————————————————————————————————————— draw save
-	if (frameCount >= _totalFrames && _save) {
-		_finnished = true
-		saveDraw();
+	if (_save) {
+		saveDraw()
+		if (frameCount >= _totalFrames) {
+			_finnished = true
+		}
 	}
 
 }

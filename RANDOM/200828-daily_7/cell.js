@@ -9,9 +9,8 @@ class Cell {
     this.idx = i + j * _cols
     this.r = _r / 2
     this.picked = picked
-    this.isFree = false
-    this.other = undefined
-    this.occupied = false
+    this.other = this.pos.copy();
+    this.checkNoiseField()
   }
 
   //——————————————————————————————————————————— Cell Update
@@ -21,21 +20,24 @@ class Cell {
     }
   }
 
+  // 
+  checkNoiseField() {
+    const nstr = this.idx ** map(mouseY, 0, height, 0, 1)
+    const nforce = map(openSimplex.noise2D(nstr, nstr), -1, 1, -_scl * 2, +_scl * 2)
+    const nx = this.opos.x + nforce * map(mouseX, 0, width, 0, 1) * map(sin(frameCount * 0.1 + this.idx), -1, 1, -1, 1)
+    this.temp = createVector(nx, this.pos.y)
+    this.other = p5.Vector.lerp(this.other, this.temp, 0.1)
+  }
+
   //——————————————————————————————————————————— Cell show
   show() {
     if (this.picked) {
       noStroke()
       if (!_showFinal) {
-        if (this.other != undefined) fill(_clrs[2])
-        else if (this.current) fill(_clrs[3])
-        else fill(_clrs[1], 50)
+        fill(_clrs[1], 50)
         textSize(16)
-        text("+", this.pos.x, this.pos.y)
+        text("+", this.pos.x - _sw / 2, this.pos.y + _sw / 2)
       }
-    } else if (this.isFree && !_showFinal) {
-      fill(_clrs[3])
-      textSize(16)
-      text("-", this.pos.x, this.pos.y)
     }
   }
 
@@ -45,6 +47,6 @@ class Cell {
     strokeWeight(_sw)
     stroke(_clrs[1], 50)
     if (_showFinal) stroke(_clrs[1])
-    vertex(this.pos.x, this.pos.y)
+    curveVertex(this.pos.x, this.pos.y)
   }
 }

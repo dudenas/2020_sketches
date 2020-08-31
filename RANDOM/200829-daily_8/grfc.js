@@ -9,7 +9,9 @@ let _myfont;
 let _rows, _cols
 let _cells = [];
 
-const _scl = 18;
+const _scl = 24;
+const _totalFrames = 60
+const _mode = 2
 let _txt = "D"
 
 //————————————————————————————————————————————— preload Grfc

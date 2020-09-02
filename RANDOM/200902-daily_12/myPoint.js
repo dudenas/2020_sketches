@@ -1,4 +1,4 @@
-const _totaltrail = 12
+const _totaltrail = 4
 
 //————————————————————————————————————————————— myPoint 
 class myPoint {
@@ -12,14 +12,16 @@ class myPoint {
   //————————————————————————————————————————————— myPoint show
   update() {
     let percent = ((frameCount + this.idx * 0.5) % _totalFrames) / _totalFrames;
-    const nforce = map(openSimplex.noise2D(percent * TWO_PI, percent * TWO_PI), -1, 1, -100, 10)
+    let nforce = map(openSimplex.noise2D(percent * TWO_PI, percent * TWO_PI), -1, 1, -50, 50)
+
+    percent = ((frameCount + this.idx * 0.03) % _totalFrames) / _totalFrames;
+    this.pos.x = map(sin(percent * TWO_PI), -1, 1, this.ipos.x, this.opos.x) + nforce
+
+    nforce = map(openSimplex.noise2D(percent * TWO_PI + PI / 3, percent * TWO_PI), -1, 1, -50, 50)
+    this.pos.y = map(sin(percent * TWO_PI), -1, 1, this.ipos.y, this.opos.y) + nforce
 
     percent = ((frameCount) % _totalFrames) / _totalFrames;
-    this.pos.x = map(sin(percent * TWO_PI), -1, 1, this.ipos.x, this.opos.x) + nforce
-    this.pos.y = map(sin(percent * TWO_PI), -1, 1, this.ipos.y, this.opos.y)
-
-    percent = ((frameCount + this.idx * 0.1) % _totalFrames) / _totalFrames;
-    this.pos.z = map(sin(percent * TWO_PI + this.idx * _off), -1, 1, 100, -100.0)
+    // this.pos.z = map(sin(percent * TWO_PI + this.idx * _off), -1, 1, 100, -100.0)
 
     if (this.trail.length > _totaltrail) {
       this.trail.splice(0, 1)

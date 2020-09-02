@@ -17,20 +17,27 @@ function preload() {
 function setupGrfc() {
   // create font points
   const txtSize = 50
-  const txt = "D"
+  const txt = "A"
   const points = _myfont.textToPoints(txt, 0, 0, 10, {
-    sampleFactor: 5,
+    sampleFactor: 12,
     simplifyThreshold: 0
   });
 
   const bounds = _myfont.textBounds(txt, 0, 0, 10);
 
   // other points
-  const otxt = "M"
+  const otxt = "B"
   const opoints = _myfont.textToPoints(otxt, 0, 0, 10, {
-    sampleFactor: 5,
+    sampleFactor: 6,
     simplifyThreshold: 0
   });
+
+  for (let i = opoints.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * i)
+    const temp = opoints[i]
+    opoints[i] = opoints[j]
+    opoints[j] = temp
+  }
 
   const obounds = _myfont.textBounds(otxt, 0, 0, 10);
 

@@ -1,7 +1,7 @@
 const openSimplex = openSimplexNoise(1);
 
 const _pd = 2
-const _totalFrames = 150
+const _totalFrames = 200
 const _r = 5
 
 let _mouse;
@@ -33,8 +33,8 @@ function setup() {
 function draw() {
 	background(_clrs[0]);
 	const percent = ((frameCount) % _totalFrames) / _totalFrames;
-	_off = map(sin(percent * TWO_PI + PI / 4), -1, 1, 0.05, 0.1);
-	translate(0, 0, -100)
+	// _off = map(sin(percent * TWO_PI + PI / 2), -1, 1, 0.1, 0.0);
+	// translate(0, 0, -100)
 	translate(-width / 2, -height / 2)
 
 	if (_finnished) {

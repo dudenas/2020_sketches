@@ -1,5 +1,5 @@
 // saving
-const _save = true;
+const _save = false;
 let _capturer;
 
 //———————————————————————————————————— save

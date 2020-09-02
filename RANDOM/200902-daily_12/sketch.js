@@ -7,16 +7,19 @@ const _r = 5
 let _mouse;
 let _finnished = false
 let ease, styles;
+let _off = 0
 
 //————————————————————————————————————————————— setup
 function setup() {
-	createCanvas(540, 540);
+	createCanvas(540, 540, WEBGL);
+	setAttributes('antialias', true);
+
 	pixelDensity(_pd)
 	setupGrfc();
 	saveSetup();
-	strokeCap(PROJECT)
-	strokeJoin(BEVEL)
-	smooth();
+	// strokeCap(PROJECT)
+	// strokeJoin(BEVEL)
+	// smooth();
 	frameRate(30)
 
 	ease = new p5.Ease();
@@ -29,17 +32,24 @@ function setup() {
 //————————————————————————————————————————————— draw
 function draw() {
 	background(_clrs[0]);
+	const percent = ((frameCount) % _totalFrames) / _totalFrames;
+	_off = map(sin(percent * TWO_PI + PI / 4), -1, 1, 0.05, 0.1);
+	translate(0, 0, -100)
+	translate(-width / 2, -height / 2)
 
 	if (_finnished) {
 		console.log("finnished")
 		noLoop()
 	}
 	//————————————————————————————————————————————— draw points
+	stroke(_clrs[1])
+	strokeWeight(1)
 	for (let i = 0; i < _points.length; i++) {
 		const p = _points[i]
 		p.update()
 		p.show()
 	}
+
 	//————————————————————————————————————————————— draw mouse
 	strokeWeight(1)
 	stroke(_clrs[2])

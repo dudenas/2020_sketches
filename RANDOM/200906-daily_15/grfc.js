@@ -16,8 +16,8 @@ function preload() {
 //————————————————————————————————————————————— setup Grfc
 function setupGrfc() {
   // create font points
-  const txtSize = 40
-  const txt = "NG"
+  const txtSize = 50
+  const txt = "N"
   const points = _myfont.textToPoints(txt, 0, 0, 10, {
     sampleFactor: 6,
     simplifyThreshold: 0
@@ -26,7 +26,7 @@ function setupGrfc() {
   const bounds = _myfont.textBounds(txt, 0, 0, 10);
 
   // other points
-  const otxt = "Ki"
+  const otxt = "O"
   const opoints = _myfont.textToPoints(otxt, 0, 0, 10, {
     sampleFactor: 12,
     simplifyThreshold: 0
@@ -49,7 +49,8 @@ function setupGrfc() {
   // add Points to myPoint class
   for (let i = 0; i < points.length; i++) {
     const p = points[i];
-    const oi = floor(map(i, 0, points.length, 0, opoints.length))
+    const oi = (floor(map(i, 0, points.length, 0, opoints.length)) + opoints.length / 2) % opoints.length
+    // const oi = floor(map(i, 0, points.length, 0, opoints.length))
     const op = opoints[oi];
     const x = p.x * txtSize - bounds.x * txtSize + width / 2 - bounds.w * txtSize / 2
     const y = p.y * txtSize + height / 2 + bounds.h * txtSize / 2

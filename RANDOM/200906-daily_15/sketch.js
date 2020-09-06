@@ -32,7 +32,7 @@ function setup() {
 //————————————————————————————————————————————— draw
 function draw() {
 	background(_clrs[0]);
-	translate(0, 0, -100)
+	// translate(0, 0, -100)
 	translate(-width / 2, -height / 2)
 
 	if (_finnished) {

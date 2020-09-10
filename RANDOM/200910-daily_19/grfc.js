@@ -16,8 +16,8 @@ function preload() {
 //————————————————————————————————————————————— setup Grfc
 function setupGrfc() {
   // create font points
-  const txtSize = 50
-  const txt = "O"
+  const txtSize = 40
+  const txt = "te"
   const points = _myfont.textToPoints(txt, 0, 0, 10, {
     sampleFactor: 6,
     simplifyThreshold: 0
@@ -26,7 +26,7 @@ function setupGrfc() {
   const bounds = _myfont.textBounds(txt, 0, 0, 10);
 
   // other points
-  const otxt = "K"
+  const otxt = "xt"
   const opoints = _myfont.textToPoints(otxt, 0, 0, 10, {
     sampleFactor: 12,
     simplifyThreshold: 0

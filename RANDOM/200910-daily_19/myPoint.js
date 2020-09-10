@@ -8,10 +8,14 @@ class myPoint {
     this.ipos = createVector(x, y, 0)
     this.opos = createVector(ox, oy, 0)
     this.trail = []
-    this.totalTrail = random(_totaltrail)
+    this.totalTrail = floor(random(1, _totaltrail))
 
     this.tempi = this.ipos.copy()
     this.tempo = this.opos.copy()
+
+    this.r = floor(random(10))
+    this.idx_1 = floor(random(this.totalTrail - 1))
+    this.idx_2 = floor(random(this.totalTrail - 1))
   }
   //————————————————————————————————————————————— myPoint change to the next indexes position
   changeNext(temp_idx) {
@@ -50,11 +54,17 @@ class myPoint {
     push()
     translate(0, 0, this.pos.z)
     beginShape()
-    strokeWeight(_sw)
-    stroke(_clrs[1])
-    for (let i = 0; i < this.trail.length - 1; i++) {
-      const elm = this.trail[i]
-      vertex(elm.x, elm.y, 0)
+    fill(_clrs[1])
+    // strokeWeight(_sw)
+    // stroke(_clrs[1])
+    // for (let i = 0; i < this.trail.length - 1; i++) {
+    //   const elm = this.trail[i]
+    //   // vertex(elm.x, elm.y, 0)
+    // }
+    if (this.trail.length >= this.totalTrail) {
+      ellipse(this.trail[this.idx_1].x, this.trail[this.idx_1].y, this.r, this.r)
+      ellipse(this.trail[this.idx_2].x, this.trail[this.idx_2].y, this.r / 2, this.r / 2)
+      // ellipse(this.trail[this.trail.length - 1].x, this.trail[this.trail.length - 1].y, this.r, this.r)
     }
     endShape()
     pop()

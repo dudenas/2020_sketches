@@ -6,7 +6,7 @@ const _totalFrames = 100
 let _mouse;
 let _finnished = false
 let ease, styles;
-let _sw = 2
+let _sw = 1
 
 //————————————————————————————————————————————— setup
 function setup() {
@@ -30,7 +30,7 @@ function setup() {
 function draw() {
 	background(_clrs[0]);
 
-	translate(-width / 1.25, -height / 5)
+	translate(-width / 1.1, -height / 3)
 
 	if (_finnished) {
 		console.log("finnished")
@@ -39,11 +39,13 @@ function draw() {
 
 	//————————————————————————————————————————————— draw points
 	stroke(_clrs[1])
+	beginShape()
 	for (let i = 0; i < _points.length; i++) {
 		const p = _points[i]
 		p.update()
 		p.show()
 	}
+	endShape()
 
 	//————————————————————————————————————————————— draw mouse
 	strokeWeight(1)
@@ -56,7 +58,7 @@ function draw() {
 	//————————————————————————————————————————————— draw save
 	if (_save) {
 		saveDraw()
-		if (frameCount > _totalFrames * 6) {
+		if (frameCount > _totalFrames * 2 * _letters.length) {
 			_finnished = true
 		}
 	}

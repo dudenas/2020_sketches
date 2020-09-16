@@ -7,7 +7,7 @@ const _clrs = [
 
 let _myfont;
 const _points = []
-const _letters = ["T", "A", "U"]
+const _letters = "abcd".split("")
 
 //————————————————————————————————————————————— preload Grfc
 function preload() {
@@ -22,7 +22,7 @@ function setupGrfc() {
   for (let i = 0; i < _letters.length; i++) {
     const txt = _letters[i]
     points.push(_myfont.textToPoints(txt, 0, 0, 10, {
-      sampleFactor: 12,
+      sampleFactor: 6,
       simplifyThreshold: 0
     }))
   }
@@ -32,7 +32,8 @@ function setupGrfc() {
   // add Points to myPoint class
   for (let i = 0; i < points.length; i++) {
     const tempPoints = points[i]
-    for (let j = 0; j < tempPoints.length; j++) {
+    for (let j = 0; j < totalPoints; j++) {
+      // if first point cloud create myPoint
       if (i == 0) {
         const p = tempPoints[j];
         const x = p.x * txtSize + width / 2
@@ -40,12 +41,14 @@ function setupGrfc() {
         _points.push(new myPoint(j, x, y))
         _points[j].opos.push(createVector(x, y, 0))
       } else {
-        const idx = floor(map(j, 0, tempPoints.length, 0, totalPoints))
+        // else add next positions
+        const idx = floor(map(j, 0, totalPoints, 0, tempPoints.length))
         const p = tempPoints[idx];
         const x = p.x * txtSize + width / 2
         const y = p.y * txtSize + height / 2
-        _points[idx].opos.push(createVector(x, y, 0))
+        _points[j].opos.push(createVector(x, y, 0))
       }
+
     }
   }
 }

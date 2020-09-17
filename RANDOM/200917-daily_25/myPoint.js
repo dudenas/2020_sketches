@@ -10,13 +10,13 @@ class myPoint {
       this.totalTrail = floor(random(1, _totaltrail))
       this.opos = []
       this.curr = 0
+      this.r = random(_r)
     }
   }
 
 
   //————————————————————————————————————————————— myPoint show
   update() {
-
     const fcount = floor((frameCount + this.idx * 0.05) % _totalFrames)
     if (fcount % _totalFrames == 0) this.curr = (this.curr + 1) % _letters.length
     let percent = (fcount) / _totalFrames;
@@ -36,9 +36,16 @@ class myPoint {
   }
 
   //————————————————————————————————————————————— myPoint show
-  show() {
-    const elm = this.trail[0]
-    ellipse(elm.x, elm.y, 1, 1)
+  showDots() {
+    for (let i = 0; i < this.trail.length - 1; i += _totaltrail / 4) {
+      const elm = this.trail[i]
+      const elmr = map(i, 0, this.trail.length - 1, this.r, this.r / 4)
+      ellipse(elm.x, elm.y, elmr, elmr)
+
+    }
+  }
+
+  showLine() {
     const elm_b = this.trail[this.trail.length - 1]
     vertex(elm_b.x, elm_b.y)
   }

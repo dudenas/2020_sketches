@@ -6,7 +6,8 @@ const _totalFrames = 100
 let _mouse;
 let _finnished = false
 let ease, styles;
-let _sw = 1
+let _sw = 40
+let _r = 3
 
 //————————————————————————————————————————————— setup
 function setup() {
@@ -30,7 +31,9 @@ function setup() {
 function draw() {
 	background(_clrs[0]);
 
-	translate(-width / 1.1, -height / 3)
+	// translate(-width / 1.05, -height / 3)
+	translate(-width / 2, -height / 2.5)
+	// translate(-width / 2, -height / 2)
 
 	if (_finnished) {
 		console.log("finnished")
@@ -38,14 +41,37 @@ function draw() {
 	}
 
 	//————————————————————————————————————————————— draw points
+
+	// show line
+	noFill()
 	stroke(_clrs[1])
+	strokeWeight(_sw)
 	beginShape()
-	for (let i = 0; i < _points.length; i++) {
+	let maxd = 0
+	for (let i = 0; i < _points.length - 1; i++) {
 		const p = _points[i]
+		const np = _points[i + 1]
+		const d = p.pos.dist(np.pos)
+		// check the distance for those connections inbetween letters
+		if (d > maxd) maxd = d
 		p.update()
-		p.show()
+		if (d > 50) {
+			endShape()
+			beginShape()
+		} else {
+			p.showLine()
+		}
 	}
 	endShape()
+
+	// show dots
+	noStroke()
+	fill(_clrs[1])
+	for (let i = 0; i < _points.length - 1; i++) {
+		const p = _points[i]
+		// p.showDots()
+
+	}
 
 	//————————————————————————————————————————————— draw mouse
 	strokeWeight(1)

@@ -7,7 +7,7 @@ const _clrs = [
 
 let _myfont;
 const _points = []
-const _letters = "love,my".split(",")
+const _letters = "dis,obey".split(",")
 
 //————————————————————————————————————————————— preload Grfc
 function preload() {
@@ -17,7 +17,7 @@ function preload() {
 //————————————————————————————————————————————— setup Grfc
 function setupGrfc() {
   // create font points
-  const txtSize = 16
+  const txtSize = 15
   const points = []
   for (let i = 0; i < _letters.length; i++) {
     const txt = _letters[i]

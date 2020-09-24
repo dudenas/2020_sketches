@@ -37,7 +37,7 @@ function setup() {
 function draw() {
 	background(_clrs[0]);
 
-	translate(-width / 2, -height / 3.5)
+	translate(-width / 2, -height / 4)
 
 	if (_finnished) {
 		console.log("finnished")

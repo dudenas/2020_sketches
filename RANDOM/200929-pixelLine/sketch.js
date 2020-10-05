@@ -17,6 +17,7 @@ function setup() {
 	ease = new p5.Ease();
 	styles = ease.listAlgos();
 	styles = ['doubleExponentialSigmoid', 'quadraticInOut']
+	frameRate(30)
 }
 
 function draw() {

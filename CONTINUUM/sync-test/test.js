@@ -1,0 +1,1 @@
+const timingProvider = new TimingProvider('ws://localhost:2276');

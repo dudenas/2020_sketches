@@ -18,7 +18,6 @@ function setup() {
 	noStroke();
 	cam = createCapture(VIDEO);
 	cam.size(width, height);
-
 	// cam.hide();
 }
 

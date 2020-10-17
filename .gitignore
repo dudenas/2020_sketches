@@ -1,2 +1,4 @@
 *.DS_Store
 node_modules/
+AR-Examples/
+CONTINUUM/SQUARE_CHANCE/square_chance_2/matrix_6x6.json

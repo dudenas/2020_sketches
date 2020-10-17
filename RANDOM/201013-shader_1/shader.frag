@@ -16,8 +16,7 @@ float plot(vec2 st,float pct){
 void main(){
     vec2 st=gl_FragCoord.xy/u_resolution;
     
-    // float y=pow(st.x,2.);
-    float y=exp(st.x);
+    float y=smoothstep(.2,.5,st.x)-smoothstep(.5,.8,st.x);
     
     vec3 color=vec3(y);
     

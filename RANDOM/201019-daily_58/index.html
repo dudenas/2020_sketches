@@ -1,38 +1,46 @@
 <!DOCTYPE html>
-<html>
+	<html>
 
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2,user-scalable=yes">
+		<title>GlslCanvas</title>
+		<link type="image/png" href="/img/favicon-32x32.png" sizes="32x32" rel="icon" />
+		<link type="image/png" href="/img/favicon-16x16.png" sizes="16x16" rel="icon" />
+		<link type="image/x-icon" href="/img/favicon.ico" rel="icon"/>
+		<link type="text/css" href="/css/glsl-canvas.css" rel="stylesheet"/>
+		<script type="text/javascript" src="/js/stats.min.js"></script>
+		<script type="text/javascript" src="/js/glsl-canvas.min.js"></script>
+	</head>
 
-	<title>201019-daily_58</title>
+	<body>
+		<canvas class="glsl-canvas" data-fragment-url="shaders/fragment.glsl"></canvas>
+	</body>
+	<script>
+		/*
+		stats.js
+		*/
+		var stats = new Stats();
+		stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+		document.body.appendChild(stats.dom);
 
-	<script src="libraries/p5.js"></script>
-	<script src="libraries/p5.dom.js"></script>
-	<script src="libraries/CCapture.all.min.js"></script>
-	<script src="libraries/p5.func.js"></script>
-	<script src="libraries/simplexNoise.js"></script>
-	<script src="myLetter.js"></script>
-	<script src="myGrfc.js"></script>
-	<script src="grfc.js"></script>
-	<script src="save.js"></script>
-	<script src="sketch.js"></script>
+		/*
+		glsl-canvas.js
+		Attributes: data-fragment-url, data-vertex-url, data-fragment, data-vertex, controls, data-autoplay
+		Events: load, error, textureError, render, over, out, move, click
+		Methods: load, on, pause, play, toggle, setTexture, setUniform, setUniforms, destroy
+		*/
+		var options = {
+			extensions: [],
+		};
+		var canvas = document.querySelector('.glsl-canvas');
+		var glsl = new glsl.Canvas(canvas, options);
+		glsl.setUniforms({});
+		glsl.on('render', function () {
+			stats.end();
+			// execute here custom code on every raf tick
+			stats.begin();
+		});
+	</script>
 
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			overflow: hidden;
-		}
-
-		canvas {
-			margin: auto;
-		}
-	</style>
-</head>
-
-<body>
-</body>
-
-</html>
+	</html>

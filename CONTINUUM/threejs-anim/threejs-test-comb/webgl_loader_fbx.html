@@ -98,7 +98,8 @@ function initialize()
 	// create atToolkitContext
 	arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: 'data/camera_para.dat',
-		detectionMode: 'color_and_matrix',
+		// detectionMode: 'color_and_matrix',
+		detectionMode: 'mono',
 		patternRatio: 0.9,
 		// patternRatio: 0.5,
 	});
@@ -118,8 +119,11 @@ function initialize()
 	let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
 		// type: 'pattern', patternUrl: "data/test.patt",
 		// type: 'pattern', patternUrl: "data/pattern-WGM_705.patt",
-		type: 'pattern', patternUrl: "data/pattern-WGM_7small_invert09.patt",
-		type: 'pattern', patternUrl: "data/pattern-WGM_7small09.patt",
+		// type: 'pattern', patternUrl: "data/pattern-WGM_7small_invert09.patt",
+		// type: 'pattern', patternUrl: "data/pattern-WGM_7small09.patt",
+		// type: 'pattern', patternUrl: "data/pattern-TUNNEL-marker.patt",
+		// type: 'pattern', patternUrl: "data/pattern-TUNNEL-marker_white_2.patt",
+		type: 'pattern', patternUrl: "data/pattern-WGM_14.patt",
 	})
 
 	let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);

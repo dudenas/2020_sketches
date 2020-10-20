@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>square_chance_tunnel_SVG</title>
+
+	<script src="libraries/p5.js"></script>
+	<script src="libraries/p5.func.js"></script>
+	<script src="libraries/p5.svg.js"></script>
+	<script src="sketch.js"></script>
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		canvas {
+			margin: auto;
+		}
+
+		/* BUTTON */
+		#button_save {
+			color: white;
+			background: black;
+			margin-top: 48px;
+			font-size: 24px;
+			width: 540px;
+			outline: none;
+			border: none;
+		}
+
+		#button_save:hover {
+			color: black;
+			background: white;
+			/* cursor: pointer; */
+		}
+	</style>
+</head>
+
+<body>
+	<div id="main"></div>
+	<div>
+		<button id="button_save" onclick="deleteChild(); recreate();">RECREATE</button>
+	</div>
+</body>
+
+</html>

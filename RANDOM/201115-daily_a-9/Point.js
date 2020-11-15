@@ -12,7 +12,8 @@ class Point {
 
   //————————————————————————————————————————————— Point updateAfterInit
   updateAfterInit() {
-    let percent = (floor(this.idx) % 8) / 4.;
+    //  4 4, 8 12, 4 12 translate -width/2
+    let percent = (floor(this.idx) % 4) / 12.;
     this.angle = map(percent, 0, 1, 0, TWO_PI)
     this.d = p5.Vector.dist(this.opos, createVector(width / 2, height / 2, 0))
     // this.angle = this.d
@@ -28,22 +29,19 @@ class Point {
     const fcount = floor(frameCount + this.idx * this.speed) % _totalFrames
     let percent = (fcount) / _totalFrames;
     // linear ease 2 5 10
-    // percent = ease[styles[2]](percent);
+    // percent = ease[styles[10]](percent);
     // percent = ease[styles[11]](percent,0.25, 12);
     this.pos.x = map(sin(TWO_PI/4*3 + percent * TWO_PI), -1, 1, this.opos.x, this.otherPos.x)
     this.angle += percent/10
-    // this.angle = 0;
-    // this.angle += this.idx * 0.0001
     // this.pos.y = map(cos(PI + percent * TWO_PI), -1, 1, this.opos.y, this.otherPos.y)
-    // this.angle = sin(this.pos.x)
   }
 
   //————————————————————————————————————————————— Point show
   show() {
     push()
     // translate(width / 2 - padd / 2, +height / 2 - padd / 2)
-    // translate(-width / 2 + padd / 2, -height / 2 + padd / 2)
     rotate(this.angle)
+    translate(-width / 2 + padd / 2, -height / 2 + padd / 2)
     translate(this.pos.x, this.pos.y, this.pos.z)
     // translate(this.otherPos.x, this.otherPos.y, this.pos.z)
     noStroke()

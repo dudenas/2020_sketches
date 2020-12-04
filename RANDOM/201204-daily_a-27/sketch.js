@@ -19,6 +19,7 @@ let _ratio
 //————————————————————————————————————————————— setup
 function setup() {
 	createCanvas(540, 540, WEBGL);
+	setAttributes('antialias', true);
 	saveSetup()
 	setupGrid()
 	frameRate(30)
